@@ -22,7 +22,7 @@ export async function httpRequest(
             "Authorization": authorization
         },
         mode: "cors",
-        body: JSON.stringify(body)
+        body: (contentType == "multipart/form-data") ? body : JSON.stringify(body)
     }
 
     if (body == null) {
@@ -31,6 +31,10 @@ export async function httpRequest(
 
     if (authorization == "") {
         delete init.headers.Authorization
+    }
+
+    if (contentType == "multipart/form-data") {
+        delete init.headers["Content-Type"]
     }
 
     const httpResponse = await fetch(env.TES_API_BASE_URL.concat(path), init)
