@@ -3,6 +3,7 @@ import {errorAlert, successAlert} from "../util/alert.js";
 import {httpRequest} from "../util/httpRequest.js";
 import {apiResponseMapping} from "../util/apiResponseMapping.js";
 import {logout} from "../util/logout.js";
+import {addLoader, removeLoader} from "../util/loader.js";
 
 awsCredentials()
 
@@ -56,6 +57,7 @@ function saveAwsCredentials() {
             errorAlert(result.message)
 
         } else {
+            addLoader()
             const apiResponse = await httpRequest("/aws-credentials", "POST", body, sessionStorage.getItem("identityToken"))
             try {
                 apiResponseMapping(apiResponse)
@@ -65,6 +67,7 @@ function saveAwsCredentials() {
                 window.location.reload()
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         }
@@ -115,6 +118,7 @@ function updateAwsCredentials() {
             errorAlert(result.message)
 
         } else {
+            addLoader()
             const apiResponse = await httpRequest("/aws-credentials", "PUT", body, sessionStorage.getItem("identityToken"))
             try {
                 apiResponseMapping(apiResponse)
@@ -124,6 +128,7 @@ function updateAwsCredentials() {
                 window.location.reload()
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         }
@@ -135,6 +140,7 @@ function deleteAwsCredentials() {
     const deleteButton = buttons[2]
 
     deleteButton.addEventListener("click", async () => {
+        addLoader()
         const apiResponse = await httpRequest("/aws-credentials", "DELETE", null, sessionStorage.getItem("identityToken"))
         try {
             apiResponseMapping(apiResponse)
@@ -142,6 +148,7 @@ function deleteAwsCredentials() {
             window.location.reload()
 
         } catch (error) {
+            removeLoader()
             errorAlert(error.message)
         }
     })
