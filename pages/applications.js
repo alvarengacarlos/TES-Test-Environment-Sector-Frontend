@@ -2,11 +2,14 @@ import {guard} from "../util/guard.js";
 import {httpRequest} from "../util/httpRequest.js";
 import {apiResponseMapping} from "../util/apiResponseMapping.js";
 import {errorAlert} from "../util/alert.js";
+import {logout} from "../util/logout.js";
 
 applications()
 
 function applications() {
     guard()
+    logout()
+
     uploadNewFile()
     listApps()
 }
@@ -104,38 +107,62 @@ function listApps() {
                 }
             }
 
-            let html = ""
+            let htmls = ""
             for (let i = 0; i < apps.length; i++) {
-                html = `
-                    <div>
-                        <h3>${apps[i].appName}</h3>
-                        <h4>Código fonte:</h4>
+                const html = `
+                    <div class="col border mb-5">
+                        <div class="row mt-2 ms-5">
+                            <h2>${apps[i].appName}</h2>
+                        </div>                        
                         <form>
-                            <input type="text" id="applications-application-name-to-source-code-${i}-input" value="${apps[i].appName}" hidden>
-                            <label for="applications-source-code-${i}-input">Código fonte:</label>
-                            <input type="file" id="applications-source-code-${i}-input" placeholder="Código fonte">
-                            <input type="text" id="applications-source-code-path-to-source-code-${i}-input" value="${apps[i].sourceCodePath}" hidden>
-                            <button type="button" name="update-button-${i}">Atualizar</button>
-                            <button type="button" name="delete-button-${i}" ${(apps[i].infraStackStatus != null) ? "disabled" : ""}>Deletar</button>
-                        </form>                
-                        <h4>Infraestrutura:</h4>
-                        <p>Estado: ${apps[i].infraStackStatus || "Não provisionado"}</p>
+                            <div class="row ms-2">                            
+                                <input type="text" id="applications-application-name-to-source-code-${i}-input" value="${apps[i].appName}" hidden>
+                                <label for="applications-source-code-${i}-input">Código fonte:</label>
+                                <input type="file" id="applications-source-code-${i}-input" placeholder="Código fonte">
+                                <input type="text" id="applications-source-code-path-to-source-code-${i}-input" value="${apps[i].sourceCodePath}" hidden>
+                            </div>
+                            <div class="row mt-2 ms-2">
+                                <div class="col">
+                                    <button type="button" name="update-button-${i}" class="btn btn-warning">Atualizar</button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" name="delete-button-${i}" ${(apps[i].infraStackStatus != null) ? "disabled" : ""} class="btn btn-danger">Deletar</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row mt-4 ms-2">                
+                            <h5>Infraestrutura:</h5>
+                        </div>
+                        <div class="row ms-2">
+                            <p>Estado: ${apps[i].infraStackStatus || "Não provisionado"}</p>
+                        </div>
                         <form>
-                            <input type="text" id="applications-application-name-to-infra-${i}-input" value="${apps[i].appName}" hidden>
-                            <label for="applications-template-type-${i}-input">Tipo do template:</label>
-                            <select id="applications-template-type-${i}-input">
-                                <option value="CONTAINER_MODEL">Container</option>
-                            </select>
-                            <input type="text" id="applications-source-code-path-to-infra-${i}-input" value="${apps[i].sourceCodePath}" hidden>
-                            <input type="text" id="applications-infra-stack-name-${i}-input" value="${apps[i].infraStackName}" hidden>
-                            <button type="button" name="provision-button-${i}" ${(apps[i].infraStackStatus != null) ? "disabled" : ""}>Provisionar</button>
-                            <button type="button" name="remove-button-${i}" ${(apps[i].infraStackStatus == null || apps[i].infraStackStatus == "CREATE_IN_PROGRESS" || apps[i].infraStackStatus == "DELETE_IN_PROGRESS") ? "disabled" : ""}>Remover</button>
+                            <div class="row ms-2">
+                                <div class="col">
+                                    <input type="text" id="applications-application-name-to-infra-${i}-input" value="${apps[i].appName}" hidden>
+                                    <label for="applications-template-type-${i}-input">Tipo do template:</label>
+                                    <select id="applications-template-type-${i}-input">
+                                        <option value="CONTAINER_MODEL">Container</option>
+                                    </select>
+                                    <input type="text" id="applications-source-code-path-to-infra-${i}-input" value="${apps[i].sourceCodePath}" hidden>
+                                    <input type="text" id="applications-infra-stack-name-${i}-input" value="${apps[i].infraStackName}" hidden>
+                                </div>
+                            </div>
+                            <div class="row ms-2 mb-4">
+                                <div class="col">
+                                    <button type="button" name="provision-button-${i}" ${(apps[i].infraStackStatus != null) ? "disabled" : ""} class="btn btn-success">Provisionar</button>
+                                </div>
+                                <div class="col">
+                                    <button type="button" name="remove-button-${i}" ${(apps[i].infraStackStatus == null || apps[i].infraStackStatus == "CREATE_IN_PROGRESS" || apps[i].infraStackStatus == "DELETE_IN_PROGRESS") ? "disabled" : ""} class="btn btn-danger">Remover</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 `
+                htmls += html
             }
             const appsContainerDiv = document.getElementById("applications-apps-container-div")
-            appsContainerDiv.innerHTML = html
+            appsContainerDiv.innerHTML = htmls
             addEventToUpdateAndDeleteSourceCode()
             addEventToProvisionAndRemoveInfraStack()
 

@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt_BR">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Confirmar conta</title>
 </head>
 <body>
-<h1>Confirmar conta</h1>
-<form>
-    <label for="confirm-sign-up-email-input">Email:</label>
-    <input type="email" id="confirm-sign-up-email-input" placeholder="fulano@email.com">
-    <label for="confirm-sign-up-confirmation-code-input">Código:</label>
-    <input type="text" id="confirm-sign-up-confirmation-code-input" placeholder="000000">
-    <input type="submit" value="Confirmar">
-</form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-6">
+            <div class="row text-center">
+                <h1>Confirmar conta</h1>
+            </div>
+            <div class="row">
+                <form>
+                    <div class="row mt-2">
+                        <label for="confirm-sign-up-email-input">Email:</label>
+                        <input type="email" id="confirm-sign-up-email-input" placeholder="fulano@email.com">
+                    </div>
+                    <div class="row mt-2">
+                        <label for="confirm-sign-up-confirmation-code-input">Código:</label>
+                        <input type="text" id="confirm-sign-up-confirmation-code-input" placeholder="000000">
+                    </div>
+                    <div class="row mt-2">
+                        <input type="submit" value="Confirmar" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <script type="module" src="./confirm-sign-up.js"></script>
