@@ -2,6 +2,7 @@ import {httpRequest} from "../util/httpRequest.js"
 import {apiResponseMapping} from "../util/apiResponseMapping.js"
 import {errorAlert} from "../util/alert.js"
 import {isAuthenticated} from "../util/isAuthenticated.js";
+import {addLoader, removeLoader} from "../util/loader.js";
 
 signIn()
 
@@ -25,6 +26,7 @@ function signIn() {
             errorAlert(result.message)
 
         } else {
+            addLoader()
             const apiResponse = await httpRequest("/sign-in", "POST", body)
             try {
                 const data = apiResponseMapping(apiResponse)
@@ -34,6 +36,7 @@ function signIn() {
                 window.location.replace("dashboard.html")
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         }

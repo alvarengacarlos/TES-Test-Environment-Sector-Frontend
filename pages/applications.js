@@ -3,6 +3,7 @@ import {httpRequest} from "../util/httpRequest.js";
 import {apiResponseMapping} from "../util/apiResponseMapping.js";
 import {errorAlert} from "../util/alert.js";
 import {logout} from "../util/logout.js";
+import {addLoader, removeLoader} from "../util/loader.js";
 
 applications()
 
@@ -38,6 +39,7 @@ async function uploadFile(applicationNameInput, sourceCodeInput) {
         formData.append("appName", applicationNameInput.value)
         formData.append("sourceCodeFile", sourceCodeInput.files[0], sourceCodeInput.files[0].name)
 
+        addLoader()
         const apiResponse = await httpRequest("/source-codes", "POST", formData, sessionStorage.getItem("identityToken"), "multipart/form-data")
         try {
             apiResponseMapping(apiResponse)
@@ -46,6 +48,7 @@ async function uploadFile(applicationNameInput, sourceCodeInput) {
             window.location.reload()
 
         } catch (error) {
+            removeLoader()
             errorAlert(error.message)
         }
     }
@@ -208,12 +211,15 @@ function addEventToUpdateAndDeleteSourceCode() {
         const deleteButton = document.getElementsByName(`delete-button-${i}`)[0]
         deleteButton.addEventListener("click", async () => {
             const sourceCodePath = document.getElementById(`applications-source-code-path-to-source-code-${i}-input`).value
+
+            addLoader()
             const apiResponse = await httpRequest(`/source-codes/${sourceCodePath}`, "DELETE", null, sessionStorage.getItem("identityToken"))
             try {
                 apiResponseMapping(apiResponse)
                 window.location.reload()
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         })
@@ -234,12 +240,14 @@ function addEventToProvisionAndRemoveInfraStack() {
                 sourceCodePath: sourceCodePath
             }
 
+            addLoader()
             const apiResponse = await httpRequest("/infra-stacks", "POST", body, sessionStorage.getItem("identityToken"))
             try {
                 apiResponseMapping(apiResponse)
                 window.location.reload()
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         })
@@ -248,12 +256,14 @@ function addEventToProvisionAndRemoveInfraStack() {
         removeButton.addEventListener("click", async () => {
             const infraStackName = document.getElementById(`applications-infra-stack-name-${i}-input`).value
 
+            addLoader()
             const apiResponse = await httpRequest(`/infra-stacks/${infraStackName}`, "DELETE", null, sessionStorage.getItem("identityToken"))
             try {
                 apiResponseMapping(apiResponse)
                 window.location.reload()
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         })

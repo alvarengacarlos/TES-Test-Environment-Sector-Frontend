@@ -1,6 +1,7 @@
 import {errorAlert} from "../util/alert.js";
 import {httpRequest} from "../util/httpRequest.js";
 import {apiResponseMapping} from "../util/apiResponseMapping.js";
+import {addLoader, removeLoader} from "../util/loader.js";
 
 signUp()
 
@@ -20,12 +21,14 @@ function signUp() {
             errorAlert(result.message)
 
         } else {
+            addLoader()
             const apiResponse = await httpRequest("/sign-up", "POST", body)
             try {
                 const data = apiResponseMapping(apiResponse)
                 window.location.replace(`confirm-sign-up.html?email=${data.email}`)
 
             } catch (error) {
+                removeLoader()
                 errorAlert(error.message)
             }
         }
