@@ -2,11 +2,13 @@ import {guard} from "../util/guard.js";
 import {errorAlert, successAlert} from "../util/alert.js";
 import {httpRequest} from "../util/httpRequest.js";
 import {apiResponseMapping} from "../util/apiResponseMapping.js";
+import {logout} from "../util/logout.js";
 
 awsCredentials()
 
 function awsCredentials() {
     guard()
+    logout()
 
     disabledButtons()
 
