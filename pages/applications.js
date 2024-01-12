@@ -120,11 +120,11 @@ function listApps() {
                         <form>
                             <div class="row ms-2">                            
                                 <input type="text" id="applications-application-name-to-source-code-${i}-input" value="${apps[i].appName}" hidden>
-                                <label for="applications-source-code-${i}-input">Código fonte:</label>
+                                <h5>Código fonte:</h5>
                                 <input type="file" id="applications-source-code-${i}-input" placeholder="Código fonte">
                                 <input type="text" id="applications-source-code-path-to-source-code-${i}-input" value="${apps[i].sourceCodePath}" hidden>
                             </div>
-                            <div class="row mt-2 ms-2">
+                            <div class="row mt-3 ms-2">
                                 <div class="col">
                                     <button type="button" name="update-button-${i}" class="btn btn-warning">Atualizar</button>
                                 </div>
@@ -151,7 +151,7 @@ function listApps() {
                                     <input type="text" id="applications-infra-stack-name-${i}-input" value="${apps[i].infraStackName}" hidden>
                                 </div>
                             </div>
-                            <div class="row ms-2 mb-4">
+                            <div class="row ms-2 mb-4 mt-2">
                                 <div class="col">
                                     <button type="button" name="provision-button-${i}" ${(apps[i].infraStackStatus != null) ? "disabled" : ""} class="btn btn-success">Provisionar</button>
                                 </div>
@@ -160,6 +160,10 @@ function listApps() {
                                 </div>
                             </div>
                         </form>
+                        <div class="row ms-2 mb-4">
+                            <h5>Comando:</h5>
+                            <span>aws s3 cp s3://${apps[i].sourceCodePath} sourceCode.zip</span>
+                        </div>
                     </div>
                 `
                 htmls += html
